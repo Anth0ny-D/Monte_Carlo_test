@@ -1,9 +1,7 @@
 import random as r
 import pandas as pd
-
 import typing as tp
 import matplotlib.pyplot as plt
-
 
 DEFAULT_LABELS = [0, 1, 2]
 DEFAULT_LENGTH = 10000
@@ -13,7 +11,7 @@ List = tp.List
 Dict = tp.Dict
 Tuple = tp.Tuple
 
-
+#в случае отсутствия файла с истинными метками - создается новый, с дефолтными параметрами.
 def create_true_labels():
     true_labels_data = r.choices(DEFAULT_LABELS, weights=DEFAULT_WEIGHTS, k=DEFAULT_LENGTH)
 
@@ -21,7 +19,6 @@ def create_true_labels():
     df.to_csv('true_labels_data.csv', index=False)
 
     return len(df)
-
 
 
 class Probs_algo:
@@ -67,7 +64,7 @@ class Probs_algo:
                 if true_labels_list[low_iteration_index] == pred_item:
                     x += 1
             accuracy_dict[high_iteration_index] = x / len(true_labels_list)
-        # print(accuracy_dict)
+
         return accuracy_dict
 
     @staticmethod
@@ -96,7 +93,6 @@ class Probs_algo:
 
             precision_dict[high_iteration_index] = TP / (TP + FP)
             recall_dict[high_iteration_index] = TP / (TP + FN)
-        # print(precision_dict, recall_dict)
 
         return precision_dict, recall_dict
 
@@ -134,7 +130,6 @@ class Probs_algo:
         for ind, i in enumerate(full_data):
             metrics[metrics_list[ind]] = self.get_cumulative_mean(i)
         metrics['Accuracy'] = cumulative_acc
-        # print(metrics)
 
         assert len(metrics) == 7
 
@@ -149,7 +144,7 @@ class Probs_algo:
         for ind, i in enumerate(self.metrics):
             plt.plot(self.metrics[i], color=colors[ind], label=i)
 
-        plt.xlim([0, (self.n-1)])
+        plt.xlim([0, (self.n - 1)])
         plt.xlabel(r'$Итерации$', fontsize=16)
         plt.ylabel(r'$Метрики$', fontsize=16)
         plt.legend(fontsize=14)
@@ -158,7 +153,3 @@ class Probs_algo:
         figure.savefig(output_path)
 
         return plt.show()
-
-
-# a = Probs_algo(data_path='D:/P-projects/test/test.csv', probs=[0.5, 0.25, 0.25], n=10, labels=[0, 1, 2])
-# a.plot_and_save_result('tt')
