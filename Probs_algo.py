@@ -153,3 +153,6 @@ class Probs_algo:
         figure.savefig(output_path)
 
         return plt.show()
+
+# TODO 1) На утро понедельника -  Пофиксить predictions (expected list[int], got list[list[int]]) 2) Добавить коменты
+
