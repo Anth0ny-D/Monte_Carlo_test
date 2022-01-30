@@ -13,13 +13,13 @@ def get_algo_params():
                            'N = 100')
 
     pars.add_argument('--n', type=int, default=N,
-                        help='Number of iterations Monte Carlo tests')
+                      help='Number of iterations Monte Carlo tests')
 
     pars.add_argument('--o', type=str, default='results.png',
-                        help='Path to save the plot')
+                      help='Path to save the plot')
 
     pars.add_argument('--p', nargs=3, type=float, default=DEFAULT_WEIGHTS,
-                        help='Probability weights')
+                      help='Probability weights')
 
     params = pars.parse_args()
     return params
@@ -31,7 +31,8 @@ def main():
 
         probs_algo = Probs_algo(data_path=a_params.i, probs=a_params.p, n=a_params.n, labels=DEFAULT_LABELS)
 
-    except: create_true_labels()
+    except:
+        create_true_labels()
 
     probs_algo = Probs_algo(data_path=a_params.i, probs=a_params.p, n=a_params.n, labels=DEFAULT_LABELS)
     probs_algo.plot_and_save_result(a_params.o)
