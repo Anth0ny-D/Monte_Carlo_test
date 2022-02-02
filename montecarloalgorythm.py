@@ -1,27 +1,9 @@
 import random as r
-import pandas as pd
-import typing as tp
+from typing import List, Dict, Tuple, Iterable
 import matplotlib.pyplot as plt
 
-DEFAULT_LABELS = [0, 1, 2]
-DEFAULT_LENGTH = 10000
-DEFAULT_WEIGHTS = [0.36, 0.12, 0.52]
-N = 100
-List = tp.List
-Dict = tp.Dict
-Tuple = tp.Tuple
 
-#в случае отсутствия файла с истинными метками - создается новый, с дефолтными параметрами.
-def create_true_labels():
-    true_labels_data = r.choices(DEFAULT_LABELS, weights=DEFAULT_WEIGHTS, k=DEFAULT_LENGTH)
-
-    df = pd.DataFrame(true_labels_data, columns=['true_labels'])
-    df.to_csv('true_labels_data.csv', index=False)
-
-    return len(df)
-
-
-class Probs_algo:
+class MonteCarloAlgorythm:
 
     def __init__(self, data_path: str, probs: List[float], n: int, labels: List[int]) -> None:
         self.true_labels_list = self.read_file(data_path=data_path)
@@ -33,11 +15,12 @@ class Probs_algo:
 
     def read_file(self, data_path: str) -> List[int]:
 
-        with open(data_path) as file:
-            data = pd.read_csv(file)
-            self.data_list = list(data[data.columns[0]])
+        with open(data_path, newline='') as file:
+            data_list = []
+            for row in file:
+                data_list.append(int(row))
 
-            return self.data_list
+            return data_list
 
     def make_predictions(self) -> List[List[int]]:
 
@@ -59,7 +42,7 @@ class Probs_algo:
         accuracy_dict = {}
         for high_iteration_index, prediction_list in enumerate(predictions):
             x = 0
-            prediction_list: tp.Iterable
+            prediction_list: Iterable
             for low_iteration_index, pred_item in enumerate(prediction_list):
                 if true_labels_list[low_iteration_index] == pred_item:
                     x += 1
@@ -81,7 +64,7 @@ class Probs_algo:
             TP = 0
             FP = 0
             FN = 0
-            prediction_list: tp.Iterable
+            prediction_list: Iterable
 
             for low_iteration_index, pred_item in enumerate(prediction_list):
                 if true_labels_list[low_iteration_index] == pred_item == class_number:
@@ -153,6 +136,3 @@ class Probs_algo:
         figure.savefig(output_path)
 
         return plt.show()
-
-# TODO 1) На утро понедельника -  Пофиксить predictions (expected list[int], got list[list[int]]) 2) Добавить коменты
-
