@@ -1,4 +1,4 @@
-from montecarloalgorythm import MonteCarloAlgorythm
+from monte_carlo_algorythm import MonteCarloAlgorythm
 import argparse
 
 
@@ -23,7 +23,7 @@ def get_algo_params():
 
 def main():
     a_params = get_algo_params()
-    probs_algo = MonteCarloAlgorythm(data_path=a_params.i, probs=a_params.p, n=a_params.n, labels=[0, 1, 2])
+    probs_algo = MonteCarloAlgorythm(data_path=a_params.i, probs=a_params.p, n=a_params.n, features=[0, 1, 2])
     probs_algo.plot_and_save_result(a_params.o)
 
 
