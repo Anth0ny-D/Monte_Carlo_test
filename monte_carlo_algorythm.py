@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 class MonteCarloAlgorythm:
 
     def __init__(self, data_path: str, probs: List[float], n: int) -> None:
+        assert sum(probs) == 1, 'sum of probability must be in 0..1'
         self.true_labels_list = self.read_file(data_path=data_path)
         self.probs = probs
         self.n = n
         self.preds = self.make_predictions()
         self.metrics = self.get_final_metrics()
-        assert sum(probs) == 1, 'sum of probability must be in 0..1'
 
     def read_file(self, data_path: str) -> List[int]:
         """
