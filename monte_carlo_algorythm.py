@@ -1,6 +1,7 @@
 import random as r
 from typing import List, Dict
 import matplotlib.pyplot as plt
+from os.path import exists
 
 
 class MonteCarloAlgorythm:
@@ -17,13 +18,13 @@ class MonteCarloAlgorythm:
 
     def read_file(self, data_path: str) -> List[int]:
         # reading data. Inserted "try" because example csv file had first row as feature name
+
+        assert exists(data_path) == True, 'Data path is wrong'
         with open(data_path, newline='') as file:
             data_list = []
+
             for row in file:
-                try:
-                    data_list.append(int(row))
-                except:
-                    pass
+                data_list.append(int(row))
 
             assert len(data_list) > 0, 'Data is empty'
 
@@ -47,44 +48,44 @@ class MonteCarloAlgorythm:
     @staticmethod
     def accuracy(true_labels_list: List[int], predictions: List[int]) -> float:
         # accuracy = (TP+TN)/(TP+TN+FP+FN)
-        x = 0
-        for ind, item in enumerate(predictions):
-            if item == true_labels_list[ind]:
-                x += 1
 
-        return x / len(true_labels_list)
+        assert len(true_labels_list) > 0, 'True labels list is empty'
+        assert len(predictions) > 0, 'Predictions list is empty'
+        assert len(true_labels_list) == len(predictions), 'Length of true labels isnt equal to length of predictions'
+
+        true_positive_true_neg = (1 for i, z in zip(true_labels_list, predictions) if i == z)
+
+        return sum(true_positive_true_neg) / len(true_labels_list)
 
     @staticmethod
     def precision(true_labels_list: List[int], predictions: List[int], class_number: int) -> float:
         # precision = TP/(TP+FP)
 
-        true_positive_results = 0
-        false_positive_results = 0
-        for ind, item in enumerate(predictions):
+        assert len(true_labels_list) > 0, 'True labels list is empty'
+        assert len(predictions) > 0, 'Predictions list is empty'
+        assert len(true_labels_list) == len(predictions), 'Length of true labels isnt equal to length of predictions'
 
-            if true_labels_list[ind] == item == class_number:
-                true_positive_results += 1
+        true_positive = [(1 for true_item, pred_item in zip(true_labels_list, predictions) if
+                          true_item == pred_item == class_number)]
+        false_positive = [(1 for true_item, pred_item in zip(true_labels_list, predictions) if true_item != pred_item
+                           and true_item == class_number)]
 
-            if true_labels_list[ind] != item and true_labels_list[ind] == class_number:
-                false_positive_results += 1
-
-        return true_positive_results / (true_positive_results + false_positive_results)
+        return len(true_positive) / (len(true_positive) + len(false_positive))
 
     @staticmethod
     def recall(true_labels_list: List[int], predictions: List[int], class_number: int) -> float:
         # recall = TP/(TP+FN)
 
-        true_positive_results = 0
-        false_negative_results = 0
-        for ind, item in enumerate(predictions):
+        assert len(true_labels_list) > 0, 'True labels list is empty'
+        assert len(predictions) > 0, 'Predictions list is empty'
+        assert len(true_labels_list) == len(predictions), 'Length of true labels isnt equal to length of predictions'
 
-            if true_labels_list[ind] == item == class_number:
-                true_positive_results += 1
+        true_positive = [(1 for true_item, pred_item in zip(true_labels_list, predictions) if
+                          true_item == pred_item == class_number)]
+        false_negative = [(1 for true_item, pred_item in zip(true_labels_list, predictions) if true_item == class_number
+                           and pred_item != class_number)]
 
-            if true_labels_list[ind] == class_number and item != class_number:
-                false_negative_results += 1
-
-        return true_positive_results / (true_positive_results + false_negative_results)
+        return len(true_positive) / ((len(true_positive) + len(false_negative)))
 
     @staticmethod
     def get_cumulative_mean(input_list) -> List[float]:
@@ -98,6 +99,8 @@ class MonteCarloAlgorythm:
             else:
                 element_to_append += input_list[i]
                 output_list.append(element_to_append / (i + 1))
+        assert len(input_list) > 0, 'Input list is empty'
+        assert len(input_list) == len(output_list), 'Length of input list not equal to length of output list'
 
         return output_list
 
@@ -147,3 +150,6 @@ class MonteCarloAlgorythm:
         figure.savefig(output_path)
 
         return plt.show()
+
+# УБРАТЬ ФИЧИ ИЗ КЛАССА
+# a = MonteCarloAlgorythm(data_path= 'true_labels_data_1.csv', probs=[0.5, 0.25, 0.25], n=5, features=[0,1,2])

@@ -5,7 +5,7 @@ import argparse
 def get_algo_params():
     pars = argparse.ArgumentParser()
 
-    pars.add_argument('--i', type=str, default='true_labels_data.csv',
+    pars.add_argument('--i', type=str, default='true_labels_data_1.csv',
                       help='Path to csv with true labels')
 
     pars.add_argument('--n', type=int, default=100,
