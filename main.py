@@ -3,9 +3,12 @@ import argparse
 
 
 def get_algo_params():
+    """
+    :return: MonteCarloAlgorythm class parameters
+    """
     pars = argparse.ArgumentParser()
 
-    pars.add_argument('--i', type=str, default='true_labels_data.csv',
+    pars.add_argument('--i', type=str, default='true_labels_data_1.csv',
                       help='Path to csv with true labels')
 
     pars.add_argument('--n', type=int, default=100,
@@ -22,8 +25,11 @@ def get_algo_params():
 
 
 def main():
+    """
+    :return: initiating program
+    """
     a_params = get_algo_params()
-    probs_algo = MonteCarloAlgorythm(data_path=a_params.i, probs=a_params.p, n=a_params.n, features=[0, 1, 2])
+    probs_algo = MonteCarloAlgorythm(data_path=a_params.i, probs=a_params.p, n=a_params.n)
     probs_algo.plot_and_save_result(a_params.o)
 
 
