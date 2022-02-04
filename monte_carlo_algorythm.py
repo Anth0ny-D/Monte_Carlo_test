@@ -104,7 +104,7 @@ class MonteCarloAlgorythm:
 
         true_positive = (true_item == pred_item == class_number for true_item, pred_item in
                          zip(true_labels_list, predictions))
-        true_positive_and_false_negative = (pred_item == class_number for pred_item in predictions)
+        true_positive_and_false_negative = (pred_item == class_number for pred_item in true_labels_list)
 
         return sum(true_positive) / sum(true_positive_and_false_negative)
 
